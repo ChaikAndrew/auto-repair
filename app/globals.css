@@ -664,3 +664,21 @@ section#booking.container {
     padding: 0 12px;
   }
 }
+
+/* мобілки та планшети — опис завжди видно */
+@media (hover: none) {
+  .service-card p {
+    position: static;
+    opacity: 1;
+    transform: none;
+    color: #4b5563; /* темно-сірий */
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 6px;
+  }
+
+  .service-card {
+    grid-template-rows: auto auto auto; /* щоб був простір під опис */
+    min-height: auto; /* картка підлаштовується під текст */
+  }
+}
