@@ -1,0 +1,666 @@
+/* =========================================
+   0) TOKENS
+========================================= */
+:root {
+  --container: 1080px;
+  --gap: 16px;
+  --brand: #d92323;
+  --ink: #111;
+  --muted: #6b7280;
+  --header-h: 64px; /* висота шапки */
+  --mobile-edge: 28px; /* відступи по краях на мобілці */
+}
+
+/* =========================================
+   1) BASE / RESET
+========================================= */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--ink);
+  background: #f7f7f8;
+  overscroll-behavior: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 16px; /* базовий, для десктопа */
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-h);
+}
+
+/* =========================================
+   2) TOPBAR
+========================================= */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #0f1113f1;
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+.topbar__inner {
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.brand {
+  font-size: 20px;
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  transition: transform 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+}
+.brand:hover {
+  color: #ffffffb8;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.nav__link {
+  color: #e5e7eb;
+  font-weight: 600;
+  padding: 8px 6px;
+  border-radius: 8px;
+}
+.nav__link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+.nav__cta {
+  margin-left: 8px;
+}
+
+/* burger */
+.burger {
+  display: none;
+  background: transparent;
+  border: 0;
+  padding: 6px;
+}
+@media (max-width: 720px) {
+  .burger {
+    display: inline-flex;
+    align-items: center;
+  }
+  .nav {
+    display: none;
+  }
+}
+
+/* =========================================
+   3) MOBILE NAV
+========================================= */
+.mobile-nav {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  right: 0;
+  z-index: 60;
+  background: #0f1113;
+  color: #fff;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.mobile-nav a {
+  color: #fff;
+  padding: 10px;
+}
+.mobile-cta {
+  width: 100%;
+  justify-content: center;
+}
+.mobile-sep {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+.mobile-nav .lang-switch {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+.mobile-nav .lang-switch a {
+  display: block;
+  text-align: center;
+  padding: 12px 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+}
+.mobile-nav .lang-switch a:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* =========================================
+   4) BUTTONS
+========================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 600;
+}
+.btn-primary {
+  background: var(--brand);
+  color: #fff;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+}
+.btn:focus {
+  outline: 2px solid rgba(217, 35, 35, 0.35);
+  outline-offset: 2px;
+}
+.btn-outline {
+  border: 1px solid #d1d5db;
+  color: var(--ink);
+  background: #fff;
+}
+
+/* =========================================
+   5) HERO + SLIDER
+========================================= */
+.landing-hero {
+  position: relative;
+  margin-top: calc(-1 * var(--header-h));
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  background: #0b0d10 center/cover no-repeat;
+  overflow: hidden;
+}
+/* slides under content */
+.slides {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+.slide.active {
+  opacity: 1;
+}
+/* dark overlay above slides */
+.landing-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.25));
+}
+/* text on top */
+.landing-hero__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: clamp(56px, 10vw, 100px) 16px;
+}
+.landing-hero .landing-hero__inner {
+  padding-top: calc(clamp(56px, 10vw, 100px) + var(--header-h));
+}
+.landing-hero h1 {
+  margin: 0 0 12px;
+  font-size: clamp(28px, 6vw, 40px);
+  line-height: 1.1;
+}
+.landing-hero p {
+  margin: 0 0 20px;
+  color: #e5e7eb;
+  font-size: clamp(14px, 2.8vw, 16px);
+}
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* =========================================
+   6) ABOUT
+========================================= */
+.about {
+  padding: 32px 0;
+}
+.about h2 {
+  margin: 0 0 12px;
+}
+.about p {
+  margin: 0 0 20px;
+  color: var(--muted);
+}
+
+/* =========================================
+   7) CONTACT + MAP
+========================================= */
+.contact-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr 1fr;
+  padding: 12px 0 12px;
+}
+.contact-card,
+.map-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+}
+.contact-card a {
+  color: var(--ink);
+  border-bottom: 1px dashed #d1d5db;
+}
+.contact-card a:hover {
+  border-bottom-color: transparent;
+}
+.map-wrap {
+  position: relative;
+  padding-top: 56%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.map-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* =========================================
+   8) SERVICES GRID
+========================================= */
+.services-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.icon-wrap {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+}
+.service-card,
+a.service-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 200px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  background: #fff;
+  color: inherit;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease,
+    color 0.25s ease;
+}
+.service-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  background: #0f1113;
+  color: #fff;
+}
+.service-card:hover .icon-wrap {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+.service-card p {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 14px;
+  margin: 0;
+  color: #e5e7eb;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+.service-card:hover p {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (hover: none) {
+  .service-card p {
+    position: static;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* =========================================
+   9) FOOTER
+========================================= */
+.footer {
+  padding: 32px 0;
+  color: var(--muted);
+}
+
+/* =========================================
+   10) REVIEWS
+========================================= */
+/* Reviews section mobile edges */
+@media (max-width: 640px) {
+  .reviews-section.container {
+    padding-left: max(var(--mobile-edge), env(safe-area-inset-left));
+    padding-right: max(var(--mobile-edge), env(safe-area-inset-right));
+  }
+
+  .reviews-section .reviews-title {
+    margin-left: 28px; /* мінімальний відступ зліва */
+  }
+}
+
+/* grid */
+.reviews-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: stretch;
+}
+
+/* card */
+.review-card {
+  padding: 20px;
+  border: 1px solid rgba(229, 231, 235, 0.7);
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.review-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* header */
+.review-card__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* avatar — робимо скруглення незалежно від бібліотеки */
+.review-card__avatar {
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.review-card__avatar img,
+.review-card .nextui-avatar img,
+.review-card .nextui-avatar span,
+.review-card :is(.nextui-avatar, .heroui-avatar) img {
+  border-radius: 12px !important;
+}
+
+/* info */
+.review-card__info {
+  display: flex;
+  flex-direction: column;
+}
+.review-card__name {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+.review-card__stars {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* body */
+.review-card__body {
+  padding-top: 16px;
+}
+.review-card__text {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #374151;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* =========================================
+   11) SCROLL TO TOP
+========================================= */
+.scroll-to-top {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  width: 44px;
+  height: 44px;
+  background: #0f1113;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+}
+.scroll-to-top:hover {
+  transform: scale(1.06);
+  background: var(--brand);
+  color: #fff;
+}
+.scroll-to-top:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-to-top {
+    transition: none;
+  }
+}
+
+/* =========================================
+   12) FORM CARDS
+========================================= */
+.card {
+  max-width: 497px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  display: grid;
+  gap: 12px;
+}
+.card input,
+.card textarea {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 15px;
+  resize: none;
+}
+.card button {
+  width: 100%;
+}
+
+/* =========================================
+   13) RESPONSIVE TWEAKS
+========================================= */
+@media (max-width: 1024px) {
+  .services-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .landing-hero {
+    min-height: 70vh;
+  }
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+  .map-wrap {
+    padding-top: 65%;
+  }
+
+  @media (max-width: 640px) {
+    .landing-hero {
+      min-height: 50vh;
+    }
+  }
+}
+
+/* ——— MOBILE SAFE-AREA & EDGE ——— */
+@media (max-width: 640px) {
+  /* однакові поля по краях скрізь, з урахуванням safe-area */
+  .container,
+  .landing-hero__inner,
+  .mobile-nav,
+  .footer .container,
+  main > section:not(.landing-hero):not(.mobile-nav),
+  .reviews-section,
+  .reviews-grid,
+  section#booking {
+    padding-left: max(var(--mobile-edge), env(safe-area-inset-left));
+    padding-right: max(var(--mobile-edge), env(safe-area-inset-right));
+  }
+
+  .landing-hero__inner {
+    padding: clamp(72px, 16vw, 110px) 0 28px;
+  }
+  .landing-hero h1,
+  .landing-hero p {
+    padding: 0;
+  }
+  .about {
+    padding: 24px 0 28px;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-actions .btn {
+    width: auto;
+    min-width: 180px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-actions {
+    flex-direction: column; /* кнопки в стовпчик */
+    align-items: center; /* центрування по горизонталі */
+
+    gap: 12px;
+  }
+  .hero-actions .btn {
+    justify-content: center;
+    width: auto;
+    min-width: 240px; /* щоб виглядали гарно */
+    text-align: center;
+  }
+}
+
+/* планшет */
+@media (min-width: 641px) and (max-width: 900px) {
+  .container {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+  .contact-grid {
+    padding: 28px 0 40px;
+  }
+}
+
+/* === Booking: mobile edges & centered card === */
+section#booking.container {
+  /* запас по краях навіть на екранах із «чубчиком» */
+
+  padding-left: max(var(--mobile-edge), env(safe-area-inset-left)) !important;
+  padding-right: max(var(--mobile-edge), env(safe-area-inset-right)) !important;
+}
+
+/* трохи більше повітря саме на мобілці */
+@media (max-width: 640px) {
+  section#booking .card {
+    padding: 20px; /* вже є, але лишаю на випадок оверрайдів */
+    border-radius: 14px;
+  }
+}
+
+/* Hero inner — центрування на мобілках і планшетах */
+@media (max-width: 900px) {
+  .landing-hero__inner.container {
+    text-align: center;
+  }
+
+  .landing-hero__inner.container h1,
+  .landing-hero__inner.container p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+}
+
+.section-title {
+  margin: 0 0 16px;
+  font-size: clamp(22px, 5vw, 32px);
+  padding: 0 12px;
+}
+
+/* для мобілок і планшетів — центруємо і даємо відступи */
+@media (max-width: 900px) {
+  .section-title {
+    text-align: center;
+    padding: 0 12px;
+  }
+}
