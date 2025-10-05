@@ -419,7 +419,7 @@ a.service-card {
 /* header */
 .review-card__header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 16px;
 }
 
@@ -444,7 +444,7 @@ a.service-card {
 .review-card__name {
   font-size: 15px;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 2.2;
   margin: 0;
 }
 .review-card__stars {
